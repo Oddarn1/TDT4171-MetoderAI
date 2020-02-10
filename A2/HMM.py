@@ -1,11 +1,17 @@
 import numpy as np
 
 
+# To run each task, uncomment the functions at the bottom of the file. Results from each will be printed.
+
+
+def normalize(matrix):
+    return matrix / matrix.sum()
+
+
 def forward(t_model, s_model, fw):
     # As in equation 15.12
     rv = s_model * np.transpose(t_model) * fw
-    # Normalize
-    return rv / np.sum(rv)
+    return normalize(rv)
 
 
 def backward(t_model, s_model, bw):
@@ -26,11 +32,9 @@ def forward_backward(ev, prior):
         fv[i + 1] = forward(T, (O_false, O_true)[ev[i]], fv[i])
 
     for i in range(t, 0, -1):
-        smoothed = np.multiply(fv[i], b)
-        # Normalize
-        sv[i - 1] = smoothed / smoothed.sum()
+        print("b_(%s:%s) = %s" % (i, t, b))
+        sv[i - 1] = normalize(np.multiply(fv[i], b))
         b = backward(T, (O_false, O_true)[ev[i - 1]], b)
-        print(b)
 
     return sv
 
@@ -68,12 +72,11 @@ def partb_2():
 def partc_1():
     ev = [True, True]
     prior = np.matrix([[0.5], [0.5]])
-    x = forward_backward(ev, prior)
     print("Backward messages:")
     x = forward_backward(ev, prior)
     print("Result:")
-    for i in x:
-        print(i)
+    for i in range(len(x)):
+        print("P(X_%s|e_(1:%s))= %s" % (i + 1, len(x), x[i]))
 
 
 def partc_2():
@@ -82,9 +85,8 @@ def partc_2():
     print("Backward messages:")
     x = forward_backward(ev, prior)
     print("Result:")
-    for i in x:
-        print(i)
-
+    for i in range(len(x)):
+        print("P(X_%s|e_(1:%s))= %s" % (i + 1, len(x), x[i]))
 
 # Uncomment for testing of each task
 # partb_1()
