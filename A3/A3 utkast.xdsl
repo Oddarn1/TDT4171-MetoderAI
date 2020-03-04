@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<decision id="Workout">
+			<state id="Chest" />
+			<state id="Back" />
+			<state id="Shoulders" />
+			<state id="Legs" />
+		</decision>
+		<cpt id="Visitors">
+			<state id="Many" />
+			<state id="Some" />
+			<state id="Few" />
+			<probabilities>0.4 0.3 0.3</probabilities>
+		</cpt>
+		<cpt id="Available_Equipment">
+			<state id="A_lot" />
+			<state id="Some" />
+			<state id="Little" />
+			<parents>Visitors</parents>
+			<probabilities>0.1 0.3 0.6 0.3 0.6 0.1 0.6 0.35 0.05</probabilities>
+		</cpt>
+		<cpt id="Planned_workout">
+			<state id="Chest" />
+			<state id="Back" />
+			<state id="Shoulders" />
+			<state id="Legs" />
+			<parents>Workout</parents>
+			<probabilities>0.98 0.01 0.01 0 0.02 0.97 0 0.01 0.03 0.01 0.95 0.01 0 0.03 0.01 0.96</probabilities>
+		</cpt>
+		<cpt id="Workout_partner">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Planned_workout</parents>
+			<probabilities>0.9 0.1 0.88 0.12 0.84 0.16 0.86 0.14</probabilities>
+		</cpt>
+		<cpt id="Number_of_exercises">
+			<state id="Many" />
+			<state id="Some" />
+			<state id="Few" />
+			<parents>Available_Equipment Workout</parents>
+			<probabilities>0.78 0.2 0.01999999999999996 0.77 0.2 0.02999999999999997 0.74 0.19 0.07000000000000001 0.75 0.15 0.1 0.48 0.3 0.22 0.5 0.3 0.2 0.52 0.31 0.17 0.51 0.33 0.16 0.26 0.4 0.34 0.3 0.38 0.32 0.35 0.35 0.3 0.32 0.36 0.32</probabilities>
+		</cpt>
+		<cpt id="Time">
+			<state id="more_than_2hrs" />
+			<state id="between_1_and_2hrs" />
+			<state id="less_than_1hr" />
+			<parents>Workout_partner Available_Equipment Number_of_exercises</parents>
+			<probabilities>0.5 0.4 0.1 0.4 0.4 0.2 0.2 0.4 0.4 0.7 0.2 0.1 0.5 0.3 0.2 0.3 0.3 0.4 0.9 0.1 0 0.7 0.2 0.1 0.5 0.2 0.3 0.3 0.5 0.2 0.2 0.4 0.4 0.1 0.4 0.5 0.5 0.3 0.2 0.4 0.3 0.3 0.3 0.3 0.4 0.7 0.2 0.1 0.5 0.3 0.2 0.3 0.4 0.3</probabilities>
+		</cpt>
+		<cpt id="Expected_traffic_at_gym">
+			<state id="Many" />
+			<state id="Some" />
+			<state id="Few" />
+			<parents>Visitors</parents>
+			<probabilities>0.9 0.1 0 0.3 0.4 0.3 0.2 0.3 0.5</probabilities>
+		</cpt>
+		<cpt id="Preparation">
+			<state id="Good" />
+			<state id="Okay" />
+			<state id="Bad" />
+			<parents>Planned_workout</parents>
+			<probabilities>0.5 0.36 0.14 0.48 0.35 0.17 0.42 0.26 0.3200000000000001 0.43 0.28 0.29</probabilities>
+		</cpt>
+		<cpt id="Exhaustion___Volume">
+			<state id="High" />
+			<state id="Medium" />
+			<state id="Low" />
+			<parents>Time Preparation Number_of_exercises</parents>
+			<probabilities>0.8 0.15 0.05 0.6 0.3 0.1 0.3 0.4 0.3 0.87 0.1 0.03 0.65 0.27 0.08 0.4 0.4 0.2 0.95 0.05 0 0.72 0.2 0.08 0.5 0.3 0.2 0.5 0.3 0.2 0.32 0.4 0.28 0.2 0.45 0.35 0.55 0.34 0.11 0.38 0.32 0.3 0.24 0.3 0.46 0.62 0.36 0.02 0.44 0.28 0.28 0.3 0.2 0.5 0.3 0.5 0.2 0.14 0.46 0.4 0.08 0.42 0.5 0.35 0.53 0.12 0.18 0.5 0.32 0.1 0.4 0.5 0.4 0.57 0.03 0.2 0.5 0.3 0.1 0.42 0.48</probabilities>
+		</cpt>
+		<cpt id="Technique">
+			<state id="Good" />
+			<state id="Bad" />
+			<parents>Available_Equipment Exhaustion___Volume</parents>
+			<probabilities>0.4 0.6 0.6 0.4 0.8 0.2 0.36 0.64 0.54 0.46 0.72 0.28 0.3 0.7 0.42 0.58 0.6 0.4</probabilities>
+		</cpt>
+		<utility id="Strength_gains">
+			<parents>Preparation Exhaustion___Volume</parents>
+			<utilities>1500 1400 1300 800 700 600 300 150 0</utilities>
+		</utility>
+		<utility id="Risk">
+			<parents>Technique Exhaustion___Volume</parents>
+			<utilities>0 400 750 1500 1000 500</utilities>
+		</utility>
+		<mau id="Utility">
+			<parents>Risk Strength_gains</parents>
+			<weights>-0.8 1</weights>
+		</mau>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.5590.0" name="Network1" faultnameformat="nodestate">
+			<node id="Workout">
+				<name>Workout</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>484 76 567 121</position>
+			</node>
+			<node id="Available_Equipment">
+				<name>Available Equipment</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>201 365 307 431</position>
+			</node>
+			<node id="Planned_workout">
+				<name>Planned workout</name>
+				<interior color="00ff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>585 156 689 219</position>
+			</node>
+			<node id="Time">
+				<name>Time</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>380 368 484 428</position>
+			</node>
+			<node id="Technique">
+				<name>Technique</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>387 517 480 573</position>
+			</node>
+			<node id="Strength_gains">
+				<name>Strength gains</name>
+				<interior color="00ccff" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>787 377 893 420</position>
+			</node>
+			<node id="Preparation">
+				<name>Preparation</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>787 243 895 305</position>
+			</node>
+			<node id="Workout_partner">
+				<name>Workout-partner</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>580 265 694 328</position>
+			</node>
+			<node id="Risk">
+				<name>Risk</name>
+				<interior color="00ccff" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>599 528 652 560</position>
+			</node>
+			<node id="Utility">
+				<name>Utility</name>
+				<interior color="00ccff" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>808 526 876 558</position>
+			</node>
+			<node id="Exhaustion___Volume">
+				<name>Exhaustion / Volume</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>582 372 670 425</position>
+			</node>
+			<node id="Number_of_exercises">
+				<name>Number of exercises</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>383 207 482 268</position>
+			</node>
+			<node id="Visitors">
+				<name>Visitors</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>208 241 301 296</position>
+			</node>
+			<node id="Expected_traffic_at_gym">
+				<name>Expected traffic at gym</name>
+				<interior color="00ff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>206 141 302 201</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<decision id="Book">
+			<state id="True" />
+			<state id="False" />
+		</decision>
+		<cpt id="Mastered_material">
+			<state id="True" />
+			<state id="False" />
+			<parents>Book</parents>
+			<probabilities>0.9 0.1 0.7 0.3</probabilities>
+		</cpt>
+		<cpt id="Pass_the_course">
+			<state id="True" />
+			<state id="False" />
+			<parents>Mastered_material Book</parents>
+			<probabilities>0.9 0.1 0.8 0.2 0.5 0.5 0.3 0.7</probabilities>
+		</cpt>
+		<utility id="Utility">
+			<parents>Book Pass_the_course</parents>
+			<utilities>1900 -100 2000 0</utilities>
+		</utility>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.5590.0" name="Network1" faultnameformat="nodestate">
+			<node id="Book">
+				<name>Book</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>141 43 222 88</position>
+			</node>
+			<node id="Mastered_material">
+				<name>Mastered material</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>36 171 131 230</position>
+			</node>
+			<node id="Pass_the_course">
+				<name>Pass the course</name>
+				<interior color="ffff00" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>242 173 331 228</position>
+			</node>
+			<node id="Utility">
+				<name>Utility</name>
+				<interior color="00ccff" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>152 318 214 350</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>
