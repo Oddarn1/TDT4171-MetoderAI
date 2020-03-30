@@ -12,7 +12,7 @@ def load_data(filename):
     data = pickle.load(open(filename, "rb"))
 
     # Initialize vectorizer
-    vectorizer = HashingVectorizer()
+    vectorizer = HashingVectorizer(stop_words="english",binary=True)
 
     # Extract features from training and test set
     print("Extracting features...")
@@ -26,7 +26,9 @@ def load_data(filename):
 
 
 def init(nb_or_tree):
-    return BernoulliNB() if nb_or_tree == "nb" else tree.DecisionTreeClassifier(max_depth=5)
+    return BernoulliNB(alpha=0.3) \
+        if nb_or_tree == "nb" \
+        else tree.DecisionTreeClassifier(max_depth=10)
 
 
 def train(model, x_data, y_data):
@@ -43,8 +45,10 @@ def evaluate(score, y_test):
     return accuracy_score(y_test, score)
 
 
-def main(chosen_model):
-    print("Running Naive Bayes") if chosen_model == "nb" else print("Running Decision Tree")
+def main(chosen_model="nb"):
+    print("Running Naive Bayes") \
+        if chosen_model == "nb" \
+        else print("Running Decision Tree")
     x_data, y_data, x_test, y_test = load_data("sklearn-data.pickle")
 
     classifier = init(chosen_model)
@@ -57,10 +61,12 @@ def main(chosen_model):
 
     print("Score: %f" % score)
 
-    # Naive Bayes: 0.798702
-    # Decision tree: 0.801981
+    # Naive Bayes: 0.849626
+    # Decision tree: 0.809443
 
 
 if __name__ == "__main__":
     model = input("Which model? nb/tree: ")
+    if model != "nb" and model != "tree":
+        print("Not recognized. Default to Naive Bayes.")
     main(model)
